@@ -5,7 +5,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
-import com.golfar.blog.service.UserService;
 
 import javax.annotation.Resource;
 
@@ -19,8 +18,8 @@ import javax.annotation.Resource;
 @Component
 public class AuthInterceptor {
 
-    @Resource
-    private UserService userService;
+//    @Resource
+//    private UserService userService;
 
     /**
      * 执行拦截，进行权限校验

@@ -6,21 +6,21 @@
 
     <resultMap id="BaseResultMap" type="com.golfar.blog.pojo.entity.Comment">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="postid" column="postId" jdbcType="BIGINT"/>
+            <result property="postId" column="post_id" jdbcType="BIGINT"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
-            <result property="rootcommentid" column="rootCommentId" jdbcType="BIGINT"/>
-            <result property="thumbnum" column="thumbNum" jdbcType="INTEGER"/>
-            <result property="tocommentid" column="toCommentId" jdbcType="INTEGER"/>
-            <result property="userid" column="userId" jdbcType="BIGINT"/>
-            <result property="createtime" column="createTime" jdbcType="TIMESTAMP"/>
-            <result property="updatetime" column="updateTime" jdbcType="TIMESTAMP"/>
-            <result property="isdelete" column="isDelete" jdbcType="TINYINT"/>
+            <result property="rootCommentId" column="root_comment_id" jdbcType="BIGINT"/>
+            <result property="thumbNum" column="thumb_num" jdbcType="INTEGER"/>
+            <result property="toCommentId" column="to_comment_id" jdbcType="INTEGER"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,postId,content,
-        rootCommentId,thumbNum,toCommentId,
-        userId,createTime,updateTime,
-        isDelete
+        id,post_id,content,
+        root_comment_id,thumb_num,to_comment_id,
+        user_id,create_time,update_time,
+        is_delete
     </sql>
 </mapper>

@@ -6,14 +6,14 @@
 
     <resultMap id="BaseResultMap" type="com.golfar.blog.pojo.entity.CommentThumb">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="commentid" column="commentId" jdbcType="BIGINT"/>
-            <result property="userid" column="userId" jdbcType="BIGINT"/>
-            <result property="createtime" column="createTime" jdbcType="TIMESTAMP"/>
-            <result property="updatetime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="commentId" column="comment_id" jdbcType="BIGINT"/>
+            <result property="userId" column="user_id" jdbcType="BIGINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,commentId,userId,
-        createTime,updateTime
+        id,comment_id,user_id,
+        create_time,update_time
     </sql>
 </mapper>

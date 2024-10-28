@@ -6,26 +6,26 @@
 
     <resultMap id="BaseResultMap" type="com.golfar.blog.pojo.entity.User">
             <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="useraccount" column="userAccount" jdbcType="VARCHAR"/>
-            <result property="userpassword" column="userPassword" jdbcType="VARCHAR"/>
-            <result property="unionid" column="unionId" jdbcType="VARCHAR"/>
-            <result property="mpopenid" column="mpOpenId" jdbcType="VARCHAR"/>
+            <result property="userAccount" column="user_account" jdbcType="VARCHAR"/>
+            <result property="userPassword" column="user_password" jdbcType="VARCHAR"/>
+            <result property="unionId" column="union_id" jdbcType="VARCHAR"/>
+            <result property="mpopenId" column="mpOpen_id" jdbcType="VARCHAR"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
-            <result property="phonenumber" column="phoneNumber" jdbcType="VARCHAR"/>
-            <result property="username" column="userName" jdbcType="VARCHAR"/>
-            <result property="useravatar" column="userAvatar" jdbcType="VARCHAR"/>
-            <result property="userprofile" column="userProfile" jdbcType="VARCHAR"/>
-            <result property="userrole" column="userRole" jdbcType="VARCHAR"/>
-            <result property="createtime" column="createTime" jdbcType="TIMESTAMP"/>
-            <result property="updatetime" column="updateTime" jdbcType="TIMESTAMP"/>
-            <result property="isdelete" column="isDelete" jdbcType="TINYINT"/>
+            <result property="phoneNumber" column="phone_number" jdbcType="VARCHAR"/>
+            <result property="userName" column="user_name" jdbcType="VARCHAR"/>
+            <result property="userAvatar" column="user_avatar" jdbcType="VARCHAR"/>
+            <result property="userProfile" column="user_profile" jdbcType="VARCHAR"/>
+            <result property="userRole" column="user_role" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,userAccount,userPassword,
-        unionId,mpOpenId,email,
-        phoneNumber,userName,userAvatar,
-        userProfile,userRole,createTime,
-        updateTime,isDelete
+        id,user_account,user_password,
+        union_id,mpOpen_id,email,
+        phone_number,user_name,user_avatar,
+        user_profile,user_role,create_time,
+        update_time,is_delete
     </sql>
 </mapper>

@@ -34,7 +34,7 @@ public class Post implements Serializable {
     /**
      * 文章所属分类Id
      */
-    private Long categoryid;
+    private Long categoryId;
 
     /**
      * 标签列表（json 数组）
@@ -44,42 +44,42 @@ public class Post implements Serializable {
     /**
      * 点赞数
      */
-    private Integer thumbnum;
+    private Integer thumbNum;
 
     /**
      * 收藏数
      */
-    private Integer favournum;
+    private Integer favourNum;
 
     /**
      * 浏览量
      */
-    private Integer viewcount;
+    private Integer viewCount;
 
     /**
      * 文章状态， 1 草稿； 0 已发布
      */
-    private String isdraft;
+    private String isDraft;
 
     /**
      * 创建用户 id
      */
-    private Long userid;
+    private Long userId;
 
     /**
      * 创建时间
      */
-    private Date createtime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
-    private Date updatetime;
+    private Date updateTime;
 
     /**
      * 是否删除
      */
-    private Integer isdelete;
+    private Integer isDelete;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

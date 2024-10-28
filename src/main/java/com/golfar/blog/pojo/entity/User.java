@@ -24,22 +24,22 @@ public class User implements Serializable {
     /**
      * 账号
      */
-    private String useraccount;
+    private String userAccount;
 
     /**
      * 密码
      */
-    private String userpassword;
+    private String userPassword;
 
     /**
      * 微信开放平台id
      */
-    private String unionid;
+    private String unionId;
 
     /**
      * 公众号openId
      */
-    private String mpopenid;
+    private String mpopenId;
 
     /**
      * 邮箱
@@ -49,42 +49,42 @@ public class User implements Serializable {
     /**
      * 电话号码
      */
-    private String phonenumber;
+    private String phoneNumber;
 
     /**
      * 用户昵称
      */
-    private String username;
+    private String userName;
 
     /**
      * 用户头像
      */
-    private String useravatar;
+    private String userAvatar;
 
     /**
      * 用户简介
      */
-    private String userprofile;
+    private String userProfile;
 
     /**
      * 用户角色：user/admin/ban
      */
-    private String userrole;
+    private String userRole;
 
     /**
      * 创建时间
      */
-    private Date createtime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
-    private Date updatetime;
+    private Date updateTime;
 
     /**
      * 是否删除
      */
-    private Integer isdelete;
+    private Integer isDelete;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 /**
 * @author Loong
 * @description 针对表【post_thumb(帖子点赞)】的数据库操作Service实现
-* @createDate 2024-10-27 00:11:45
+* @createDate 2024-10-27 15:05:09
 */
 @Service
 public class PostThumbServiceImpl extends ServiceImpl<PostThumbMapper, PostThumb>
