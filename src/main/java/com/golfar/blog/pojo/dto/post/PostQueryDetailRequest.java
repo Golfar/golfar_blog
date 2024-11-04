@@ -7,7 +7,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class PostDeleteRequest implements Serializable {
+public class PostQueryDetailRequest implements Serializable {
 
     /**
      * id
@@ -15,5 +15,4 @@ public class PostDeleteRequest implements Serializable {
     private Long id;
 
     private static final long serialVersionUID = 1L;
-
 }

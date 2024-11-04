@@ -1,4 +1,4 @@
-package com.golfar.blog.pojo.vo;
+package com.golfar.blog.pojo.vo.user;
 
 import lombok.Data;
 
@@ -8,16 +8,21 @@ import java.util.Date;
 /**
  * @author : golfar
  * @project : golfar_blog
- * @description : 已登录用户信息响应类
- * @date : 2024-10-27 15:09
+ * @description : 用户信息响应类
+ * @date : 2024-10-27 15:17
  **/
 @Data
-public class UserLoginVO implements Serializable {
+public class UserVO implements Serializable {
 
     /**
      * 用户 id
      */
     private Long id;
+
+    /**
+     * 用户昵称
+     */
+    private String userName;
 
     /**
      * 邮箱
@@ -28,11 +33,6 @@ public class UserLoginVO implements Serializable {
      * 电话号码
      */
     private String phoneNumber;
-
-    /**
-     * 用户昵称
-     */
-    private String userName;
 
     /**
      * 用户头像
@@ -48,6 +48,16 @@ public class UserLoginVO implements Serializable {
      * 用户角色：user/admin/ban
      */
     private String userRole;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 }

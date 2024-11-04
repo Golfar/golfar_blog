@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.golfar.blog.pojo.dto.user.UserQueryRequest;
 import com.golfar.blog.pojo.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.golfar.blog.pojo.vo.UserLoginVO;
-import com.golfar.blog.pojo.vo.UserVO;
+import com.golfar.blog.pojo.vo.user.UserLoginVO;
+import com.golfar.blog.pojo.vo.user.UserVO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
