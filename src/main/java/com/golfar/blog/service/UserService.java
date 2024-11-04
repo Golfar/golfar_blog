@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.golfar.blog.pojo.dto.user.UserQueryRequest;
 import com.golfar.blog.pojo.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.golfar.blog.pojo.vo.LoginUserVo;
-import com.golfar.blog.pojo.vo.UserVo;
+import com.golfar.blog.pojo.vo.UserLoginVO;
+import com.golfar.blog.pojo.vo.UserVO;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -21,11 +21,10 @@ public interface UserService extends IService<User> {
      * 用户注册
      * @param userAccount
      * @param userPassword
-     * @param userName
      * @param checkPassword
      * @return 新用户id
      */
-    long userRegister(String userAccount, String userPassword, String userName, String checkPassword);
+    long userRegister(String userAccount, String userPassword, String checkPassword);
 
     /**
      * 用户登录
@@ -34,7 +33,7 @@ public interface UserService extends IService<User> {
      * @param request
      * @return 脱敏后的用户信息
      */
-    LoginUserVo userLogin(String userAccount, String userPassword, HttpServletRequest request);
+    UserLoginVO userLogin(String userAccount, String userPassword, HttpServletRequest request);
 
     /**
      * 获取当前登录用户
@@ -77,21 +76,21 @@ public interface UserService extends IService<User> {
      * @param user
      * @return
      */
-    LoginUserVo getLoginUserVo(User user);
+    UserLoginVO getLoginUserVo(User user);
 
     /**
      * 获取用户脱敏信息
      * @param user
      * @return
      */
-    UserVo getUserVo(User user);
+    UserVO getUserVo(User user);
 
     /**
      * 获取用户脱敏信息
      * @param userList
      * @return
      */
-    List<UserVo> getUserVo(List<User> userList);
+    List<UserVO> getUserVo(List<User> userList);
 
     /**
      * 获取查询条件

@@ -12,7 +12,7 @@ import java.util.Date;
  * @date : 2024-10-27 15:17
  **/
 @Data
-public class UserVo implements Serializable {
+public class UserVO implements Serializable {
 
     /**
      * 用户 id
@@ -24,6 +24,15 @@ public class UserVo implements Serializable {
      */
     private String userName;
 
+    /**
+     * 邮箱
+     */
+    private String email;
+
+    /**
+     * 电话号码
+     */
+    private String phoneNumber;
 
     /**
      * 用户头像

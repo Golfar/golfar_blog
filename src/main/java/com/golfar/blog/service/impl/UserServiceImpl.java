@@ -9,8 +9,8 @@ import com.golfar.blog.exception.BusinessException;
 import com.golfar.blog.mapper.UserMapper;
 import com.golfar.blog.pojo.dto.user.UserQueryRequest;
 import com.golfar.blog.pojo.entity.User;
-import com.golfar.blog.pojo.vo.LoginUserVo;
-import com.golfar.blog.pojo.vo.UserVo;
+import com.golfar.blog.pojo.vo.UserLoginVO;
+import com.golfar.blog.pojo.vo.UserVO;
 import com.golfar.blog.service.UserService;
 import com.golfar.blog.utils.BeanCopyUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -38,11 +39,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      */
     private static final String SALT = "golfar";
 
+    @Resource
+    private UserMapper userMapper;
+
     @Override
-    public long userRegister(String userAccount, String userPassword, String userName, String checkPassword) {
+    public long userRegister(String userAccount, String userPassword, String checkPassword) {
 
         // 参数校验
-        if(StringUtils.isAnyBlank(userAccount, userPassword, checkPassword, userName)){
+        if(StringUtils.isAnyBlank(userAccount, userPassword, checkPassword)){
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "账号，用户名或密码为空");
         }
         if (userAccount.length() < 4) {
@@ -71,8 +75,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             // 插入数据
             User user = new User();
             user.setUserAccount(userAccount);
-            user.setUserPassword(userPassword);
-            user.setUserName(userName);
+            user.setUserPassword(encryptPassword);
+            // TODO 给用户添加随机昵称
 
             boolean saved = save(user);
             if(!saved){
@@ -83,7 +87,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public LoginUserVo userLogin(String userAccount, String userPassword, HttpServletRequest request) {
+    public UserLoginVO userLogin(String userAccount, String userPassword, HttpServletRequest request) {
 
         // 1. 校验
         if (StringUtils.isAnyBlank(userAccount, userPassword)) {
@@ -100,7 +104,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 3. 校验用户是否存在
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getUserAccount, userAccount)
-                .eq(User::getUserPassword, userAccount);
+                .eq(User::getUserPassword, encryptPassword);
         User user = getOne(wrapper);
         if(user == null){
             log.info("user login failed, userAccount cannot match userPassword");
@@ -169,27 +173,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public LoginUserVo getLoginUserVo(User user) {
+    public UserLoginVO getLoginUserVo(User user) {
         if(user == null || user.getId() == null || user.getId() <= 0){
             return null;
         }
-        return BeanCopyUtils.copy(user, LoginUserVo.class);
+        return BeanCopyUtils.copy(user, UserLoginVO.class);
     }
 
     @Override
-    public UserVo getUserVo(User user) {
+    public UserVO getUserVo(User user) {
         if(user == null || user.getId() == null || user.getId() <= 0){
             return null;
         }
-        return BeanCopyUtils.copy(user, UserVo.class);
+        return BeanCopyUtils.copy(user, UserVO.class);
     }
 
     @Override
-    public List<UserVo> getUserVo(List<User> userList) {
+    public List<UserVO> getUserVo(List<User> userList) {
         if(userList == null || userList.isEmpty()){
             return new ArrayList<>();
         }
-        return BeanCopyUtils.copyList(userList, UserVo.class);
+        return BeanCopyUtils.copyList(userList, UserVO.class);
     }
 
     @Override

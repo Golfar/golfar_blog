@@ -1,10 +1,9 @@
 package com.golfar.blog;
 
 import com.golfar.blog.pojo.entity.User;
-import com.golfar.blog.pojo.vo.LoginUserVo;
+import com.golfar.blog.pojo.vo.UserLoginVO;
 import com.golfar.blog.utils.BeanCopyUtils;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +32,8 @@ public class BeanCopyUtilsTest {
         users.add(user);
         users.add(user2);
 
-        LoginUserVo copy = BeanCopyUtils.copy(user, LoginUserVo.class);
-        List<LoginUserVo> ts = BeanCopyUtils.copyList(users, LoginUserVo.class);
+        UserLoginVO copy = BeanCopyUtils.copy(user, UserLoginVO.class);
+        List<UserLoginVO> ts = BeanCopyUtils.copyList(users, UserLoginVO.class);
         System.out.println(copy);
         System.out.println(ts);
 
