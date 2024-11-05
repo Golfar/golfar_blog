@@ -1,9 +1,9 @@
 package com.golfar.blog.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.golfar.blog.pojo.dto.post.*;
 import com.golfar.blog.pojo.entity.Post;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.golfar.blog.pojo.vo.post.PostDetailVO;
 import com.golfar.blog.pojo.vo.post.PostPageVO;
 
@@ -26,7 +26,8 @@ public interface PostService extends IService<Post> {
 
     PostDetailVO getPostDetail(PostQueryDetailRequest postQueryDetailRequest, HttpServletRequest request);
 
-    Page<PostPageVO> getPostPage(PostQueryPageRequest postQueryPageRequest);
+    Page<PostPageVO> getPostPage(PostQueryPageRequest postQueryPageRequest, HttpServletRequest request);
 
     Page<PostPageVO> getPostPageVO(Page<Post> postPage);
+
 }

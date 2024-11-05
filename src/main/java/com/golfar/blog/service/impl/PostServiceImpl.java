@@ -1,6 +1,5 @@
 package com.golfar.blog.service.impl;
 
-import aj.org.objectweb.asm.Type;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -9,18 +8,19 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.golfar.blog.common.ErrorCode;
 import com.golfar.blog.exception.ThrowUtils;
+import com.golfar.blog.mapper.PostMapper;
 import com.golfar.blog.pojo.dto.post.*;
 import com.golfar.blog.pojo.entity.*;
 import com.golfar.blog.pojo.vo.post.PostDetailVO;
 import com.golfar.blog.pojo.vo.post.PostPageVO;
 import com.golfar.blog.service.*;
-import com.golfar.blog.mapper.PostMapper;
 import com.golfar.blog.utils.BeanCopyUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -77,14 +77,13 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
     @Override
     public boolean deletePost(PostDeleteRequest postDeleteRequest, HttpServletRequest request) {
         Long postId = postDeleteRequest.getId();
+        Post post = this.getById(postId);
         ThrowUtils.throwIf(postId == null || postId < 0, ErrorCode.PARAMS_ERROR, "要删除的文章不存在");
         User loginUser = userService.getLoginUser(request);
         Long userId = loginUser.getId();
         // 删除文章id相同，且创建用户相同的文章
-        LambdaQueryWrapper<Post> wrapper = Wrappers.lambdaQuery(Post.class)
-                .eq(Post::getId, postId)
-                .eq(Post::getUserId, userId);
-        return this.remove(wrapper);
+        ThrowUtils.throwIf(!userId.equals(post.getUserId()), ErrorCode.PARAMS_ERROR, "无权限删除");
+        return this.removeById(postId);
     }
 
     @Override
@@ -100,6 +99,10 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
         // 判断帖子 id 是否存在
         Post oldPost = this.getById(postId);
         ThrowUtils.throwIf(oldPost == null, ErrorCode.PARAMS_ERROR, "更新的文章不存在");
+        // 判断创建用户 id 是否相同
+        User loginUser = userService.getLoginUser(request);
+        Long loginUserId = loginUser.getId();
+        ThrowUtils.throwIf(!loginUserId.equals(oldPost.getUserId()), ErrorCode.PARAMS_ERROR, "无权限更新");
         // 更新文章
         return this.updateById(post);
     }
@@ -109,9 +112,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
 
         // 参数校验
         Long postId = postQueryDetailRequest.getId();
+        Boolean isMyPost = postQueryDetailRequest.getIsMyPost();
         ThrowUtils.throwIf(postId == null || postId <= 0, ErrorCode.PARAMS_ERROR, "查看的文章不存在");
-        // 检查文章是否存在
-        Post post = this.getById(postId);
+        // 检查文章是否存在，是否为草稿
+        LambdaQueryWrapper<Post> wrapper = Wrappers.lambdaQuery(Post.class).eq(Post::getId, postId)
+                .eq(!isMyPost, Post::getIsDraft, "0");
+        Post post = this.getOne(wrapper);
         ThrowUtils.throwIf(post == null, ErrorCode.PARAMS_ERROR, "查看的文章不存在");
         // 将字符串转为JSON
         PostDetailVO postDetailVO = BeanCopyUtils.copy(post, PostDetailVO.class);
@@ -159,18 +165,26 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
     }
 
     @Override
-    public Page<PostPageVO> getPostPage(PostQueryPageRequest postQueryPageRequest) {
+    public Page<PostPageVO> getPostPage(PostQueryPageRequest postQueryPageRequest, HttpServletRequest request) {
         Integer pageSize = postQueryPageRequest.getPageSize();
         Integer pageNum = postQueryPageRequest.getPageNum();
+        Boolean isMyPost = postQueryPageRequest.getIsMyPost();
         // 参数校验
         ThrowUtils.throwIf(pageSize == null || pageSize <= 0 || pageNum == null || pageNum <= 0, ErrorCode.PARAMS_ERROR, "请求的页数不合法");
+        Long loginUserId = 0L;
+        if(isMyPost != null && isMyPost){
+            loginUserId = userService.getLoginUser(request).getId();
+        } else{
+            isMyPost = false;
+        }
         // 分页查询
         LambdaQueryWrapper<Post> wrapper = Wrappers.lambdaQuery(Post.class)
+                .eq(!isMyPost, Post::getIsDraft, "0")
+                .eq(isMyPost, Post::getUserId, loginUserId)
                 .orderByDesc(Post::getCreateTime);
         Page<Post> postPage = this.page(new Page<>(pageNum, pageSize), wrapper);
-        // 封装结果
-        // 返回封装类
-        return null;
+        // 封装结果，返回封装类
+        return this.getPostPageVO(postPage);
     }
 
     @Override
@@ -180,12 +194,29 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
         if(CollUtil.isEmpty(postList)){
             return postVOPage;
         }
-        // 复制用户
         // 根据用户 id 查询用户名称
         Set<Long> userIdSet = postList.stream().map(Post::getUserId).collect(Collectors.toSet());
         Map<Long, List<User>> userIdUserListMap = userService.listByIds(userIdSet).stream()
                 .collect(Collectors.groupingBy(User::getId));
-        return null;
+        // 根据类别 id 查询类别名称
+        Set<Long> categoryIdSet = postList.stream().map(Post::getCategoryId).collect(Collectors.toSet());
+        Map<Long, List<Category>> categoryIdCategoryListMap = categoryService.listByIds(categoryIdSet).stream()
+                .collect(Collectors.groupingBy(Category::getId));
+        List<PostPageVO> postPageVOList = new ArrayList<>();
+        for (Post post : postList) {
+            PostPageVO postPageVO = BeanCopyUtils.copy(post, PostPageVO.class);
+            // 根据类别 id 查询类别名称
+            Category category = categoryIdCategoryListMap.get(post.getCategoryId()).get(0);
+            postPageVO.setCategoryName(category.getName());
+            // 根据用户 id 查询用户名称
+            User user = userIdUserListMap.get(post.getUserId()).get(0);
+            postPageVO.setUserName(user.getUserName());
+            // 封装 tags
+            postPageVO.setTags(JSONUtil.toList(JSONUtil.parseArray(post.getTags()), String.class));
+            postPageVOList.add(postPageVO);
+        }
+        postVOPage.setRecords(postPageVOList);
+        return postVOPage;
     }
 
 

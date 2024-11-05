@@ -6,27 +6,27 @@ package com.golfar.blog.constant;
  * @description : 用户身份常量
  * @date : 2024-10-26 23:36
  **/
-public class UserConstant {
+public interface UserConstant {
 
     /**
      * 用户登录态键
      */
-    public static final String USER_LOGIN_STATE = "user_login";
+    String USER_LOGIN_STATE = "user_login";
 
     //  region 权限
 
     /**
      * 默认角色
      */
-    public static final String DEFAULT_ROLE = "user";
+    String DEFAULT_ROLE = "user";
 
     /**
      * 管理员角色
      */
-    public static final String ADMIN_ROLE = "admin";
+    String ADMIN_ROLE = "admin";
 
     /**
      * 被封号
      */
-    public static final String BAN_ROLE = "ban";
+    String BAN_ROLE = "ban";
 }

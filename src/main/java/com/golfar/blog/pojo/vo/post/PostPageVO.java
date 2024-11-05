@@ -37,6 +37,11 @@ public class PostPageVO implements Serializable {
     private Integer viewCount;
 
     /**
+     * 创建用户 id
+     */
+    private Long userId;
+
+    /**
      * 创建用户 昵称
      */
     private String userName;
@@ -45,6 +50,11 @@ public class PostPageVO implements Serializable {
      * 创建时间
      */
     private Date createTime;
+
+    /**
+     * 文章状态， 1 草稿； 0 已发布
+     */
+    private String isDraft;
 
     private static final long serialVersionUID = 1L;
 }

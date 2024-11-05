@@ -14,5 +14,12 @@ public class PostQueryDetailRequest implements Serializable {
      */
     private Long id;
 
+    /**
+     * 是否查看我的帖子，区别是否显式草稿
+     * 1 是我的贴子； 2 不是我的帖子
+     */
+    private Boolean isMyPost;
+
     private static final long serialVersionUID = 1L;
+
 }

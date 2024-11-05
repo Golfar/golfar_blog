@@ -6,7 +6,7 @@ package com.golfar.blog.constant;
  * @description : 文件常量
  * @date : 2024-10-26 23:36
  **/
-public class FileConstant {
+public interface FileConstant {
 
     /**
      * COS 访问地址
