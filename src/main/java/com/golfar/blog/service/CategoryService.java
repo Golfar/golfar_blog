@@ -1,7 +1,9 @@
 package com.golfar.blog.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.golfar.blog.pojo.entity.Category;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.golfar.blog.pojo.vo.category.CategoryVO;
 
 /**
 * @author Loong
@@ -10,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface CategoryService extends IService<Category> {
 
+    Page<CategoryVO> getCategoryPageVO(Page<Category> categoryPage);
 }

@@ -1,7 +1,9 @@
 package com.golfar.blog.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.golfar.blog.pojo.entity.Tag;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.golfar.blog.pojo.vo.tag.TagVO;
 
 /**
 * @author Loong
@@ -10,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface TagService extends IService<Tag> {
 
+    Page<TagVO> getTagPageVO(Page<Tag> tagPage);
 }
