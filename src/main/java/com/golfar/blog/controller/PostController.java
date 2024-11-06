@@ -1,19 +1,24 @@
 package com.golfar.blog.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.golfar.blog.common.BaseResponse;
 import com.golfar.blog.common.ErrorCode;
 import com.golfar.blog.common.ResultUtils;
 import com.golfar.blog.exception.ThrowUtils;
 import com.golfar.blog.pojo.dto.post.*;
+import com.golfar.blog.pojo.entity.CommentThumb;
+import com.golfar.blog.pojo.entity.Post;
+import com.golfar.blog.pojo.entity.PostFavour;
+import com.golfar.blog.pojo.entity.PostThumb;
 import com.golfar.blog.pojo.vo.post.PostDetailVO;
 import com.golfar.blog.pojo.vo.post.PostPageVO;
+import com.golfar.blog.service.PostFavourService;
 import com.golfar.blog.service.PostService;
+import com.golfar.blog.service.PostThumbService;
 import com.golfar.blog.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +28,15 @@ import javax.servlet.http.HttpServletRequest;
 public class PostController {
     @Resource
     private PostService postService;
+
+    @Resource
+    private UserService userService;
+
+    @Resource
+    private PostThumbService postThumbService;
+
+    @Resource
+    private PostFavourService postFavourService;
 
     /**
      * 创建帖子
@@ -81,7 +95,7 @@ public class PostController {
     }
 
     /**
-     * 查看帖子列表，查看首页帖子或我的帖子
+     * 查看帖子列表，查看首页帖子 或我的帖子 或我收藏的帖子
      * @param postQueryPageRequest
      * @return
      */
@@ -92,6 +106,67 @@ public class PostController {
         return ResultUtils.success(postPageVOPage);
     }
 
+    @GetMapping("/thumb")
+    public BaseResponse<Boolean> thumbPost(Long postId, HttpServletRequest request){
+        // TODO 有没有必要上事务 判断是否已经点赞
+        // 参数校验
+        ThrowUtils.throwIf(postId == null || request == null, ErrorCode.PARAMS_ERROR, "查看帖子参数为空或连接异常");
+        Long loginUserId = userService.getLoginUser(request).getId();
+        Post post = postService.getById(postId);
+        ThrowUtils.throwIf(post == null, ErrorCode.PARAMS_ERROR, "点赞的帖子不存在");
+        // 判断是否已经点赞
+        LambdaQueryWrapper<PostThumb> postThumbWrapper = Wrappers.lambdaQuery(PostThumb.class)
+                .eq(PostThumb::getPostId, postId)
+                .eq(PostThumb::getUserId, loginUserId);
+        long postThumbCount = postThumbService.count(postThumbWrapper);
+        ThrowUtils.throwIf(postThumbCount == 1, ErrorCode.OPERATION_ERROR, "您已经点过赞了");
+        // 插入点赞数据
+        PostThumb postThumb = new PostThumb();
+        postThumb.setPostId(postId);
+        postThumb.setUserId(loginUserId);
+        boolean saved = postThumbService.save(postThumb);
+        ThrowUtils.throwIf(!saved, ErrorCode.OPERATION_ERROR, "点赞失败");
+        // 点赞数加1
+        // TODO 用缓存做比较好
+        post.setThumbNum(post.getThumbNum() + 1);
+        boolean updated = postService.updateById(post);
+        ThrowUtils.throwIf(!updated, ErrorCode.OPERATION_ERROR, "点赞失败");
+        return ResultUtils.success(true);
+    }
 
+    @GetMapping("/favour")
+    public BaseResponse<Boolean> favourPost(Long postId, HttpServletRequest request){
+        // TODO 有没有必要上事务
+        // 参数校验
+        ThrowUtils.throwIf(postId == null || request == null, ErrorCode.PARAMS_ERROR, "收藏的帖子不存在");
+        Long loginUserId = userService.getLoginUser(request).getId();
+        Post post = postService.getById(postId);
+        ThrowUtils.throwIf(post == null, ErrorCode.PARAMS_ERROR, "收藏的帖子不存在");
+        // 判断是否已经收藏
+        LambdaQueryWrapper<PostFavour> postFavourWrapper = Wrappers.lambdaQuery(PostFavour.class)
+                .eq(PostFavour::getUserId, loginUserId)
+                .eq(PostFavour::getPostId, postId);
+        long count = postFavourService.count(postFavourWrapper);
+        ThrowUtils.throwIf(count == 0, ErrorCode.OPERATION_ERROR, "已经收藏过该帖子");
+        // 插入收藏
+        PostFavour postFavour = new PostFavour();
+        postFavour.setPostId(postId);
+        postFavour.setUserId(loginUserId);
+        boolean saved = postFavourService.save(postFavour);
+        ThrowUtils.throwIf(!saved, ErrorCode.OPERATION_ERROR, "收藏失败");
+        // 收藏数加1
+        // TODO 用缓存做比较好
+        post.setFavourNum(post.getFavourNum() + 1);
+        boolean updated = postService.updateById(post);
+        ThrowUtils.throwIf(!updated, ErrorCode.OPERATION_ERROR, "收藏失败");
+        return ResultUtils.success(true);
+    }
+
+    @GetMapping("/get/page/favour")
+    public BaseResponse<Page<PostPageVO>> getFavourPostPage(@RequestBody PostFavourQueryPageRequest postFavourQueryPageRequest, HttpServletRequest request){
+        ThrowUtils.throwIf(postFavourQueryPageRequest == null || request == null, ErrorCode.PARAMS_ERROR, "连接异常");
+        Page<PostPageVO> postPageVOPage = postFavourService.getFavourPostPage(postFavourQueryPageRequest, request);
+        return ResultUtils.success(postPageVOPage);
+    }
 
 }

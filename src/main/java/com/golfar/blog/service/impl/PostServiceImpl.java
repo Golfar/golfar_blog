@@ -119,6 +119,12 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
                 .eq(!isMyPost, Post::getIsDraft, "0");
         Post post = this.getOne(wrapper);
         ThrowUtils.throwIf(post == null, ErrorCode.PARAMS_ERROR, "查看的文章不存在");
+        // 更新浏览量
+        // TODO 用缓存装viewCount
+        if(post.getIsDraft().equals("0")){
+            post.setViewCount(post.getViewCount() + 1);
+        }
+        this.updateById(post);
         // 将字符串转为JSON
         PostDetailVO postDetailVO = BeanCopyUtils.copy(post, PostDetailVO.class);
         postDetailVO.setTags(JSONUtil.toList(JSONUtil.parseArray(post.getTags()), String.class));

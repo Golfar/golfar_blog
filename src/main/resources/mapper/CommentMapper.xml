@@ -10,7 +10,8 @@
             <result property="content" column="content" jdbcType="VARCHAR"/>
             <result property="rootCommentId" column="root_comment_id" jdbcType="BIGINT"/>
             <result property="thumbNum" column="thumb_num" jdbcType="INTEGER"/>
-            <result property="toCommentId" column="to_comment_id" jdbcType="INTEGER"/>
+            <result property="toCommentId" column="to_comment_id" jdbcType="BIGINT"/>
+            <result property="toUserId" column="to_user_id" jdbcType="BIGINT"/>
             <result property="userId" column="user_id" jdbcType="BIGINT"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
@@ -19,7 +20,7 @@
 
     <sql id="Base_Column_List">
         id,post_id,content,
-        root_comment_id,thumb_num,to_comment_id,
+        root_comment_id,thumb_num,to_comment_id,to_user_id,
         user_id,create_time,update_time,
         is_delete
     </sql>

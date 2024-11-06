@@ -44,7 +44,12 @@ public class Comment implements Serializable {
     /**
      * 回复目标评论 id
      */
-    private Integer toCommentId;
+    private Long toCommentId;
+
+    /**
+     * 回复目标评论用户 id
+     */
+    private Long toUserId;
 
     /**
      * 创建用户 id

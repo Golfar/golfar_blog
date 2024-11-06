@@ -1,7 +1,12 @@
 package com.golfar.blog.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.golfar.blog.pojo.dto.post.PostFavourQueryPageRequest;
 import com.golfar.blog.pojo.entity.PostFavour;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.golfar.blog.pojo.vo.post.PostPageVO;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
 * @author Loong
@@ -10,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface PostFavourService extends IService<PostFavour> {
 
+    Page<PostPageVO> getFavourPostPage(PostFavourQueryPageRequest postFavourQueryPageRequest, HttpServletRequest request);
 }
