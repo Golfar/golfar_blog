@@ -12,5 +12,10 @@ import com.golfar.blog.pojo.vo.category.CategoryVO;
 */
 public interface CategoryService extends IService<Category> {
 
+    /**
+     * 分页获取类别接口
+     * @param categoryPage
+     * @return
+     */
     Page<CategoryVO> getCategoryPageVO(Page<Category> categoryPage);
 }

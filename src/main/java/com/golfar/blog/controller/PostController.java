@@ -85,7 +85,7 @@ public class PostController {
 
     /**
      * 查看帖子详情，所有人都能查看帖子
-     * 需要登录用户对象判断用户是否已经点赞收藏
+     * 需要对已经登录用户对象判断用户是否已经点赞收藏
      * @param postQueryDetailRequest
      * @param request
      * @return
@@ -98,7 +98,8 @@ public class PostController {
     }
 
     /**
-     * 查看帖子列表，查看首页帖子 或我的帖子 或我收藏的帖子
+     * 查看帖子列表
+     * 查看首页帖子 或我的帖子
      * @param postQueryPageRequest
      * @return
      */
@@ -109,6 +110,13 @@ public class PostController {
         return ResultUtils.success(postPageVOPage);
     }
 
+    /**
+     * 点赞帖子
+     * 只有登录用户才能点赞
+     * @param postId
+     * @param request
+     * @return
+     */
     @GetMapping("/thumb")
     public BaseResponse<Boolean> thumbPost(Long postId, HttpServletRequest request){
         // TODO 有没有必要上事务 判断是否已经点赞
@@ -137,6 +145,13 @@ public class PostController {
         return ResultUtils.success(true);
     }
 
+    /**
+     * 收藏帖子
+     * 只有登录用户才能收藏
+     * @param postId
+     * @param request
+     * @return
+     */
     @GetMapping("/favour")
     public BaseResponse<Boolean> favourPost(Long postId, HttpServletRequest request){
         // TODO 有没有必要上事务
@@ -165,6 +180,13 @@ public class PostController {
         return ResultUtils.success(true);
     }
 
+    /**
+     * 分页获取我收藏的帖子
+     * 登录用户
+     * @param postFavourQueryPageRequest
+     * @param request
+     * @return
+     */
     @GetMapping("/get/page/favour")
     public BaseResponse<Page<PostPageVO>> getFavourPostPage(@RequestBody PostFavourQueryPageRequest postFavourQueryPageRequest, HttpServletRequest request){
         ThrowUtils.throwIf(postFavourQueryPageRequest == null || request == null, ErrorCode.PARAMS_ERROR, "连接异常");

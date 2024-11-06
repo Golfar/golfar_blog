@@ -40,6 +40,13 @@ public class CategoryController {
     @Resource
     private UserService userService;
 
+    /**
+     * 添加目录类别
+     * TODO 只有管理员能够添加
+     * @param categoryAddRequest
+     * @param request
+     * @return
+     */
     @PostMapping("/add")
     public BaseResponse<Long> addCategory(@RequestBody CategoryAddRequest categoryAddRequest, HttpServletRequest request){
         ThrowUtils.throwIf(categoryAddRequest == null || request == null, ErrorCode.PARAMS_ERROR, "添加类别参数错误或连接错误");
@@ -54,6 +61,12 @@ public class CategoryController {
         return ResultUtils.success(category.getId());
     }
 
+    /**
+     * 删除目录类别
+     * TODO 只有管理员能够删除
+     * @param categoryDeleteRequest
+     * @return
+     */
     @PostMapping("/delete")
     public BaseResponse<Boolean> deleteCategory(@RequestBody CategoryDeleteRequest categoryDeleteRequest){
         ThrowUtils.throwIf(categoryDeleteRequest == null, ErrorCode.PARAMS_ERROR, "删除类别参数错误");
@@ -65,6 +78,12 @@ public class CategoryController {
         return ResultUtils.success(removed);
     }
 
+    /**
+     * 修改目录类别
+     * TODO 只有管理员能够修改
+     * @param categoryUpdateRequest
+     * @return
+     */
     @PostMapping("/update")
     public BaseResponse<Boolean> updateCategory(@RequestBody CategoryUpdateRequest categoryUpdateRequest){
         ThrowUtils.throwIf(categoryUpdateRequest == null, ErrorCode.PARAMS_ERROR, "修改类别参数错误");
@@ -79,6 +98,11 @@ public class CategoryController {
         return ResultUtils.success(updated);
     }
 
+    /**
+     * 获取目录类别
+     * @param categoryQueryRequest
+     * @return
+     */
     @PostMapping("/getAll")
     public BaseResponse<Page<CategoryVO>> getAllCategory(@RequestBody CategoryQueryRequest categoryQueryRequest){
         ThrowUtils.throwIf(categoryQueryRequest == null, ErrorCode.PARAMS_ERROR, "类别查询参数错误");

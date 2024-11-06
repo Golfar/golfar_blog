@@ -12,5 +12,10 @@ import com.golfar.blog.pojo.vo.tag.TagVO;
 */
 public interface TagService extends IService<Tag> {
 
+    /**
+     * 分页获取全部标签
+     * @param tagPage
+     * @return
+     */
     Page<TagVO> getTagPageVO(Page<Tag> tagPage);
 }

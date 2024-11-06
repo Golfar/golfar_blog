@@ -35,6 +35,13 @@ public class CommentController {
     @Resource
     private CommentThumbService commentThumbService;
 
+    /**
+     * 添加评论
+     * 只有登录用户可以评论
+     * @param commentAddRequest
+     * @param request
+     * @return
+     */
     @PostMapping("/add")
     public BaseResponse<CommentVO> addComment(@RequestBody CommentAddRequest commentAddRequest, HttpServletRequest request){
         // 参数校验
@@ -43,6 +50,13 @@ public class CommentController {
         return ResultUtils.success(commentVO);
     }
 
+    /**
+     * 删除评论
+     * 用户只能删除自己的评论
+     * @param commentId
+     * @param request
+     * @return
+     */
     @GetMapping("/delete")
     public BaseResponse<Boolean> deleteComment(Long commentId, HttpServletRequest request){
         // TODO 还要删除帖子点赞的信息
@@ -51,6 +65,11 @@ public class CommentController {
         return ResultUtils.success(result);
     }
 
+    /**
+     * 分页获取评论
+     * @param commentQueryRequest
+     * @return
+     */
     @PostMapping("/get/page")
     public BaseResponse<Page<CommentVO>> getCommentPage(@RequestBody CommentQueryRequest commentQueryRequest){
         ThrowUtils.throwIf(commentQueryRequest == null, ErrorCode.PARAMS_ERROR, "新增评论参数错误或连接异常");
@@ -58,6 +77,11 @@ public class CommentController {
         return ResultUtils.success(commentVOPage);
     }
 
+    /**
+     * 分页获取子评论
+     * @param commentChildQueryRequest
+     * @return
+     */
     @PostMapping("/get/page/child")
     public BaseResponse<Page<CommentVO>> getChildCommentPage(@RequestBody CommentChildQueryRequest commentChildQueryRequest){
         ThrowUtils.throwIf(commentChildQueryRequest == null, ErrorCode.PARAMS_ERROR, "新增评论参数错误或连接异常");
@@ -65,6 +89,13 @@ public class CommentController {
         return ResultUtils.success(commentVOPage);
     }
 
+    /**
+     * 点赞评论
+     * 只有登录才能点赞
+     * @param commentId
+     * @param request
+     * @return
+     */
     @GetMapping("/thumb")
     public BaseResponse<Boolean> thumbComment(Long commentId, HttpServletRequest request){
         // TODO 加缓存，加事务

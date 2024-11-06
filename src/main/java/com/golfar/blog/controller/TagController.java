@@ -46,6 +46,12 @@ public class TagController {
     @Resource
     private UserService userService;
 
+    /**
+     * 添加标签
+     * @param tagAddRequest
+     * @param request
+     * @return
+     */
     @PostMapping("/add")
     public BaseResponse<Long> addTag(@RequestBody TagAddRequest tagAddRequest, HttpServletRequest request){
         ThrowUtils.throwIf(tagAddRequest == null || request == null, ErrorCode.PARAMS_ERROR, "添加标签参数错误或连接错误");
@@ -60,6 +66,11 @@ public class TagController {
         return ResultUtils.success(tag.getId());
     }
 
+    /**
+     * 删除标签
+     * @param tagDeleteRequest
+     * @return
+     */
     @PostMapping("/delete")
     public BaseResponse<Boolean> deleteTag(@RequestBody TagDeleteRequest tagDeleteRequest){
         ThrowUtils.throwIf(tagDeleteRequest == null, ErrorCode.PARAMS_ERROR, "删除类别参数错误");
@@ -71,6 +82,11 @@ public class TagController {
         return ResultUtils.success(removed);
     }
 
+    /**
+     * 编辑标签
+     * @param tagUpdateRequest
+     * @return
+     */
     @PostMapping("/update")
     public BaseResponse<Boolean> updateTag(@RequestBody TagUpdateRequest tagUpdateRequest){
         ThrowUtils.throwIf(tagUpdateRequest == null, ErrorCode.PARAMS_ERROR, "修改类别参数错误");
@@ -85,6 +101,12 @@ public class TagController {
         return ResultUtils.success(updated);
     }
 
+    /**
+     * 获取标签
+     * TODO 是否需要分页
+     * @param tagQueryRequest
+     * @return
+     */
     @PostMapping("/getAll")
     public BaseResponse<Page<TagVO>> getAllTag(@RequestBody TagQueryRequest tagQueryRequest){
         ThrowUtils.throwIf(tagQueryRequest == null, ErrorCode.PARAMS_ERROR, "类别查询参数错误");
