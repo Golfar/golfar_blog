@@ -1,13 +1,11 @@
 package com.golfar.blog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.golfar.blog.common.ErrorCode;
 import com.golfar.blog.constant.UserConstant;
 import com.golfar.blog.exception.BusinessException;
 import com.golfar.blog.mapper.UserMapper;
-import com.golfar.blog.pojo.dto.user.UserQueryRequest;
 import com.golfar.blog.pojo.entity.User;
 import com.golfar.blog.pojo.vo.user.UserLoginVO;
 import com.golfar.blog.pojo.vo.user.UserVO;
@@ -196,11 +194,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return BeanCopyUtils.copyList(userList, UserVO.class);
     }
 
-    @Override
-    public QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest) {
-        if(userQueryRequest == null);
-        return null;
-    }
 }
 
 

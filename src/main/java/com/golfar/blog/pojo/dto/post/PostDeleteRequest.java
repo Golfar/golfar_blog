@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 删除帖子请求类
+ */
 @Data
 public class PostDeleteRequest implements Serializable {
 

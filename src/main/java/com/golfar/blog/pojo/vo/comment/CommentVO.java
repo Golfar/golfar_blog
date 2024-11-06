@@ -6,6 +6,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 评论响应类
+ */
 @Data
 public class CommentVO implements Serializable {
     /**

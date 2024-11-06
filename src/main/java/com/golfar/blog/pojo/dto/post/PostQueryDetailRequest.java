@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 查看帖子详情请求类
+ */
 @Data
 public class PostQueryDetailRequest implements Serializable {
 

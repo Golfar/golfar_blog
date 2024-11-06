@@ -1,7 +1,5 @@
 package com.golfar.blog.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.golfar.blog.pojo.dto.user.UserQueryRequest;
 import com.golfar.blog.pojo.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.golfar.blog.pojo.vo.user.UserLoginVO;
@@ -92,11 +90,6 @@ public interface UserService extends IService<User> {
      */
     List<UserVO> getUserVo(List<User> userList);
 
-    /**
-     * 获取查询条件
-     * @param userQueryRequest
-     * @return
-     */
-    QueryWrapper<User> getQueryWrapper(UserQueryRequest userQueryRequest);
+
 
 }

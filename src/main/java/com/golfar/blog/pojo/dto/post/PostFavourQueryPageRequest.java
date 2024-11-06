@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 查看收藏的帖子请求类
+ */
 @Data
 public class PostFavourQueryPageRequest implements Serializable {
     /**

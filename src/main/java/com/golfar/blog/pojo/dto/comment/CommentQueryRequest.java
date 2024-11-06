@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 查询帖子评论请求类
+ */
 @Data
 public class CommentQueryRequest implements Serializable {
     /**

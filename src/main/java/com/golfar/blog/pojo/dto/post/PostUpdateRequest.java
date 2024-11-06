@@ -7,6 +7,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * 编辑帖子请求类
+ */
 @Data
 public class PostUpdateRequest implements Serializable {
     /**

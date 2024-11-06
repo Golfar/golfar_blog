@@ -26,6 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 获取类别，目录相关接口
+ */
 @RestController
 @RequestMapping("/category")
 public class CategoryController {

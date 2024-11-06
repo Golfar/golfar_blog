@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 编辑标签请求类
+ */
 @Data
 public class TagUpdateRequest implements Serializable {
     /**

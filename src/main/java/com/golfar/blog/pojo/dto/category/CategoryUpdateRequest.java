@@ -8,6 +8,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 更改类别请求类
+ */
 @Data
 public class CategoryUpdateRequest implements Serializable {
     /**

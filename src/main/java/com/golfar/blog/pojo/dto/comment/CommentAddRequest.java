@@ -8,6 +8,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 增加评论请求类
+ */
 @Data
 public class CommentAddRequest implements Serializable {
 

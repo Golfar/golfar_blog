@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 帖子相关接口
+ */
 @RestController
 @RequestMapping("/post")
 public class PostController {

@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 评论相关接口
+ */
 @RestController
 @RequestMapping("/comment")
 public class CommentController {

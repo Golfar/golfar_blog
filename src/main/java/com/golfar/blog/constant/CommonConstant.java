@@ -1,5 +1,8 @@
 package com.golfar.blog.constant;
 
+/**
+ * 项目通用常量
+ */
 public interface CommonConstant {
 
     /**

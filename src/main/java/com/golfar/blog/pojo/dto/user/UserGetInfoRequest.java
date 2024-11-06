@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 查找用户个人信息请求类
+ */
 @Data
 public class UserGetInfoRequest implements Serializable {
 

@@ -8,6 +8,9 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 删除类别请求类
+ */
 @Data
 public class CategoryDeleteRequest implements Serializable {
     /**

@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 标签响应类
+ */
 @Data
 public class TagVO implements Serializable {
     /**

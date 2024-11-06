@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 帖子详情响应类
+ */
 @Data
 public class PostDetailVO implements Serializable {
 

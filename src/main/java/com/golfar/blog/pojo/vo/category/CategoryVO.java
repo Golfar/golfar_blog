@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 类别响应类
+ */
 @Data
 public class CategoryVO implements Serializable {
     /**

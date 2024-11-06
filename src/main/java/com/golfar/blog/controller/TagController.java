@@ -32,6 +32,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 标签相关接口
+ */
 @RestController
 @RequestMapping("/tag")
 public class TagController {
