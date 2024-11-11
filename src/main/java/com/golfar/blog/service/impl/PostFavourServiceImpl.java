@@ -30,33 +30,6 @@ import java.util.stream.Collectors;
 @Service
 public class PostFavourServiceImpl extends ServiceImpl<PostFavourMapper, PostFavour>
     implements PostFavourService{
-
-    @Resource
-    private PostService postService;
-
-    @Resource
-    private UserService userService;
-
-    @Override
-    public Page<PostPageVO> getFavourPostPage(PostFavourQueryPageRequest postFavourQueryPageRequest, HttpServletRequest request) {
-        // 参数校验
-        Long loginUserId = userService.getLoginUser(request).getId();
-        Integer pageSize = postFavourQueryPageRequest.getPageSize();
-        Integer pageNum = postFavourQueryPageRequest.getPageNum();
-        ThrowUtils.throwIf(pageSize == null || pageSize <= 0 || pageNum == null || pageNum <= 0, ErrorCode.PARAMS_ERROR, "请求的页数不合法");
-        // 查询我收藏的帖子
-        LambdaQueryWrapper<PostFavour> postFavourWrapper = Wrappers.lambdaQuery(PostFavour.class)
-                .select(PostFavour::getPostId)
-                .eq(PostFavour::getUserId, loginUserId);
-        List<PostFavour> postFavourList = this.list(postFavourWrapper);
-        // 获得我收藏的帖子 id
-        Set<Long> postIdSet = postFavourList.stream().map(PostFavour::getPostId).collect(Collectors.toSet());
-        // 根据帖子 id 查询我收藏的帖子内容
-        LambdaQueryWrapper<Post> postWrapper = Wrappers.lambdaQuery(Post.class)
-                .in(Post::getId, postIdSet);
-        Page<Post> postPage = postService.page(new Page<>(pageNum, pageSize), postWrapper);
-        return postService.getPostPageVO(postPage);
-    }
 }
 
 

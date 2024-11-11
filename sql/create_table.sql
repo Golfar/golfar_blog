@@ -81,7 +81,7 @@ create table if not exists comment
     root_comment_id bigint   default -1                not null comment '父评论 id, -1为根评论',
     thumb_num       int      default 0                 not null comment '点赞数',
     to_comment_id   bigint                             null     comment '回复目标评论 id',
-    to_user_id      bigint                             not null comment '回复目标评论用户 id'
+    to_user_id      bigint                             not null comment '回复目标评论用户 id',
     user_id         bigint                             not null comment '创建用户 id',
     create_time     datetime default CURRENT_TIMESTAMP not null comment '创建时间',
     update_time     datetime default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间',

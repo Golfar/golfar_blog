@@ -190,7 +190,7 @@ public class PostController {
     @GetMapping("/get/page/favour")
     public BaseResponse<Page<PostPageVO>> getFavourPostPage(@RequestBody PostFavourQueryPageRequest postFavourQueryPageRequest, HttpServletRequest request){
         ThrowUtils.throwIf(postFavourQueryPageRequest == null || request == null, ErrorCode.PARAMS_ERROR, "连接异常");
-        Page<PostPageVO> postPageVOPage = postFavourService.getFavourPostPage(postFavourQueryPageRequest, request);
+        Page<PostPageVO> postPageVOPage = postService.getFavourPostPage(postFavourQueryPageRequest, request);
         return ResultUtils.success(postPageVOPage);
     }
 

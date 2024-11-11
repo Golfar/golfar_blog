@@ -71,4 +71,6 @@ public interface PostService extends IService<Post> {
      */
     Page<PostPageVO> getPostPageVO(Page<Post> postPage);
 
+    Page<PostPageVO> getFavourPostPage(PostFavourQueryPageRequest postFavourQueryPageRequest, HttpServletRequest request);
+
 }

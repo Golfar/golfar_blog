@@ -15,11 +15,4 @@ import javax.servlet.http.HttpServletRequest;
 */
 public interface PostFavourService extends IService<PostFavour> {
 
-    /**
-     * 分页获取收藏的帖子
-     * @param postFavourQueryPageRequest
-     * @param request
-     * @return
-     */
-    Page<PostPageVO> getFavourPostPage(PostFavourQueryPageRequest postFavourQueryPageRequest, HttpServletRequest request);
 }
