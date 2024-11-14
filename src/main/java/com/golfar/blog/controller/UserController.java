@@ -10,10 +10,7 @@ import com.golfar.blog.pojo.vo.user.UserLoginVO;
 import com.golfar.blog.pojo.vo.user.UserVO;
 import com.golfar.blog.service.UserService;
 import com.golfar.blog.utils.BeanCopyUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -50,7 +47,7 @@ public class UserController {
      */
     @PostMapping("/login")
     public BaseResponse<UserLoginVO> login(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request){
-        ThrowUtils.throwIf(userLoginRequest == null, ErrorCode.PARAMS_ERROR, "登录请求参数为空");
+        ThrowUtils.throwIf(userLoginRequest == null || request == null, ErrorCode.PARAMS_ERROR, "登录请求参数为空");
         String userAccount = userLoginRequest.getUserAccount();
         String userPassword = userLoginRequest.getUserPassword();
         UserLoginVO userLoginVO = userService.userLogin(userAccount, userPassword, request);
@@ -108,5 +105,12 @@ public class UserController {
         User user = userService.getById(id);
         UserVO result = BeanCopyUtils.copy(user, UserVO.class);
         return ResultUtils.success(result);
+    }
+
+    @GetMapping("/get/loginUser")
+    public BaseResponse<UserVO> getLoginUser(HttpServletRequest request){
+        User loginUser = userService.getLoginUser(request);
+        UserVO userVo = userService.getUserVo(loginUser);
+        return ResultUtils.success(userVo);
     }
 }
