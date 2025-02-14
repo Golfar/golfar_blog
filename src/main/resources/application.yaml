@@ -19,6 +19,10 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123
+  elasticsearch:
+    uris: http://localhost:9200
+    username: elastic
+    password:
 
   # Redis 配置
   # todo 需替换配置，然后取消注释

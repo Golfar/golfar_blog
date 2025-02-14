@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.golfar.blog.common.ErrorCode;
+import com.golfar.blog.constant.CommonConstant;
 import com.golfar.blog.exception.ThrowUtils;
 import com.golfar.blog.mapper.PostMapper;
 import com.golfar.blog.pojo.dto.post.*;
@@ -16,6 +17,16 @@ import com.golfar.blog.pojo.vo.post.PostPageVO;
 import com.golfar.blog.service.*;
 import com.golfar.blog.utils.BeanCopyUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHit;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -43,6 +54,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
     private PostFavourService postFavourService;
     @Resource
     private PostThumbService postThumbService;
+    @Resource
+    private ElasticsearchRestTemplate elasticsearchRestTemplate;
 
     @Override
     public long addPost(PostAddRequest postAddRequest, HttpServletRequest request) {
@@ -244,6 +257,72 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
                 .in(Post::getId, postIdSet);
         Page<Post> postPage = this.page(new Page<>(pageNum, pageSize), postWrapper);
         return this.getPostPageVO(postPage);
+    }
+
+    @Override
+    public Page<Post> searchFromEs(PostSearchFromEsRequest postSearchFromEsRequest, HttpServletRequest request) {
+        // 获取参数
+        Long id = postSearchFromEsRequest.getId();
+        Long notId = postSearchFromEsRequest.getNotId();
+        String searchText = postSearchFromEsRequest.getSearchText();
+        String title = postSearchFromEsRequest.getTitle();
+        String content = postSearchFromEsRequest.getContent();
+        List<String> tags = postSearchFromEsRequest.getTags();
+        Long categoryId = postSearchFromEsRequest.getCategoryId();
+        String isDraft = postSearchFromEsRequest.getIsDraft();
+        Long userId = postSearchFromEsRequest.getUserId();
+        Integer pageSize = postSearchFromEsRequest.getPageSize();
+        // es 其实页数为0
+        Integer pageNum = postSearchFromEsRequest.getPageNum() - 1;
+        // 构造查询条件
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        // 过滤
+        boolQueryBuilder.filter(QueryBuilders.termQuery("isDelete", 0));
+        if(id != null){
+            boolQueryBuilder.filter(QueryBuilders.termQuery("id", id));
+        }
+        if(notId != null){
+            boolQueryBuilder.mustNot(QueryBuilders.termQuery("id", notId));
+        }
+        if(userId != null){
+            boolQueryBuilder.filter(QueryBuilders.termQuery("userId", userId));
+        }
+        if(categoryId != null){
+            boolQueryBuilder.filter(QueryBuilders.termQuery("categoryId", categoryId));
+        }
+        // 必须包含所有标签
+        if(CollUtil.isNotEmpty(tags)){
+            for(String tag: tags){
+                boolQueryBuilder.filter(QueryBuilders.termQuery("tags", tag));
+            }
+        }
+        // 按关键词搜索
+        if(StringUtils.isNotBlank(searchText)){
+            boolQueryBuilder.should(QueryBuilders.matchQuery("title", searchText));
+            boolQueryBuilder.should(QueryBuilders.matchQuery("content", searchText));
+            boolQueryBuilder.should(QueryBuilders.matchQuery("answer", searchText));
+            boolQueryBuilder.minimumShouldMatch(1);
+        }
+        // 分页
+        PageRequest pageRequest = PageRequest.of(pageNum, pageSize);
+        // 构造查询
+        NativeSearchQuery searchQuery = new NativeSearchQueryBuilder()
+                .withQuery(boolQueryBuilder)
+                .withPageable(pageRequest)
+                .build();
+        SearchHits<PostEsDTO> searchHits = elasticsearchRestTemplate.search(searchQuery, PostEsDTO.class);
+        // 复用 myBatis 分页对象，封装返回结果
+        Page<Post> postPage = new Page<>();
+        postPage.setTotal(searchHits.getTotalHits());
+        List<Post> resourceList = new ArrayList<>();
+        if(searchHits.hasSearchHits()){
+            List<SearchHit<PostEsDTO>> searchHitsList = searchHits.getSearchHits();
+            for (SearchHit<PostEsDTO> questionEsDTOSearchHit : searchHitsList) {
+                resourceList.add(PostEsDTO.dtoToObj(questionEsDTOSearchHit.getContent()));
+            }
+        }
+        postPage.setRecords(resourceList);
+        return postPage;
     }
 
 

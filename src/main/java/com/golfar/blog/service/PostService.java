@@ -73,4 +73,5 @@ public interface PostService extends IService<Post> {
 
     Page<PostPageVO> getFavourPostPage(PostFavourQueryPageRequest postFavourQueryPageRequest, HttpServletRequest request);
 
+    Page<Post> searchFromEs(PostSearchFromEsRequest postSearchFromEsRequest, HttpServletRequest request);
 }

@@ -194,4 +194,10 @@ public class PostController {
         return ResultUtils.success(postPageVOPage);
     }
 
+    @GetMapping("/search/page/vo")
+    public BaseResponse<Page<PostPageVO>> searchPostVOByPage(@RequestBody PostSearchFromEsRequest postSearchFromEsRequest, HttpServletRequest request){
+        Page<Post> postPage = postService.searchFromEs(postSearchFromEsRequest, request);
+        return ResultUtils.success(postService.getPostPageVO(postPage));
+    }
+
 }
