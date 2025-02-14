@@ -1,0 +1,32 @@
+{
+  "groups": [
+    {
+      "name": "spring.redis",
+      "type": "com.golfar.blog.config.RedissonConfig",
+      "sourceType": "com.golfar.blog.config.RedissonConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "spring.redis.database",
+      "type": "java.lang.Integer",
+      "sourceType": "com.golfar.blog.config.RedissonConfig"
+    },
+    {
+      "name": "spring.redis.host",
+      "type": "java.lang.String",
+      "sourceType": "com.golfar.blog.config.RedissonConfig"
+    },
+    {
+      "name": "spring.redis.password",
+      "type": "java.lang.String",
+      "sourceType": "com.golfar.blog.config.RedissonConfig"
+    },
+    {
+      "name": "spring.redis.port",
+      "type": "java.lang.Integer",
+      "sourceType": "com.golfar.blog.config.RedissonConfig"
+    }
+  ],
+  "hints": []
+}
